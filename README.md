@@ -152,6 +152,9 @@ Access the Apache server from a browser:
 
                         http://<EC2-PUBLIC-IP>
 
+<img width="1919" height="918" alt="image" src="https://github.com/user-attachments/assets/2cb9a481-ca10-4c2b-bd8c-9e2ca9f373d3" />
+
+
 Each request generates an entry in:
 
                       /var/log/apache2/access.log
@@ -181,6 +184,8 @@ The final S3 path is:
 
                           s3://jenkins-access-log-backup-2026-vaishnavi/access-logs/
 
+<img width="1920" height="1080" alt="Screenshot 2026-08-21 115856" src="https://github.com/user-attachments/assets/6325c2db-120e-40bb-bffb-cfbb49f8c4a2" />
+
 ---
 
 ## Step 4 — Create IAM Role for Jenkins
@@ -192,6 +197,9 @@ Create an IAM role:
 Attach the required S3 permissions.
 
 Attach this IAM role to the EC2 instance running Jenkins.
+
+<img width="1914" height="1019" alt="image" src="https://github.com/user-attachments/assets/ff1dadb2-69bc-436e-9ff0-356e50fd1407" />
+
 
 Verify the role from the server:
 
