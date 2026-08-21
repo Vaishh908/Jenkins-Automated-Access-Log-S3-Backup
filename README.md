@@ -652,6 +652,7 @@ Finished: SUCCESS
 
 # Project Structure
 
+```text
 automated-log-backup/
 │
 ├── README.md
@@ -669,7 +670,7 @@ automated-log-backup/
     ├── s3-upload.png
     ├── cleared-log.png
     └── email-success.png
-
+```
 ---
 
 ## Result
