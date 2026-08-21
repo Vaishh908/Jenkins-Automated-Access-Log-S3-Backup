@@ -1,6 +1,6 @@
 # Automated Jenkins Job Triggered by Access Log Size 
 
-## Project Overview
+# Project Overview
 
 This project implements an automated Apache access log monitoring and backup system using Linux Shell Script, Jenkins, Amazon S3, AWS IAM Role, and Email Notification.
 
@@ -17,13 +17,13 @@ The solution uses an IAM Role attached to the Jenkins EC2 instance, so no long-l
 
 ---
 
-## Architectural Diagram
+# Architectural Diagram
 
 <img width="1536" height="1024" alt="ChatGPT Image Aug 21, 2026, 07_06_00 PM" src="https://github.com/user-attachments/assets/0e7be119-268b-424b-a1af-f39940633e97" />
 
 ---
 
-## Technology Used
+# Technology Used
 
 | Technology             | Purpose                              |
 | ---------------------- | ------------------------------------ |
@@ -40,7 +40,7 @@ The solution uses an IAM Role attached to the Jenkins EC2 instance, so no long-l
 
 ---
 
-## Prerequisites
+# Prerequisites
 
 Before implementing the project, install and configure the following:
 
@@ -80,6 +80,32 @@ Verify Jenkins:
          sudo systemctl status jenkins
 
 ---
+
+# Project Structure
+
+```text
+automated-log-backup/
+│
+├── README.md
+│
+├── scripts/
+│   └── monitor_apache_log.sh
+│
+├── jenkins/
+│   └── Jenkinsfile
+│
+└── screenshots/
+    ├── apache-log.png
+    ├── monitoring-script.png
+    ├── jenkins-success.png
+    ├── s3-upload.png
+    ├── cleared-log.png
+    └── email-success.png
+```
+
+---
+
+# Implementations Steps
 
 ## Step 1 — Install Apache
 
@@ -650,27 +676,6 @@ Jenkins result:
 
 Finished: SUCCESS
 
-# Project Structure
-
-```text
-automated-log-backup/
-│
-├── README.md
-│
-├── scripts/
-│   └── monitor_apache_log.sh
-│
-├── jenkins/
-│   └── Jenkinsfile
-│
-└── screenshots/
-    ├── apache-log.png
-    ├── monitoring-script.png
-    ├── jenkins-success.png
-    ├── s3-upload.png
-    ├── cleared-log.png
-    └── email-success.png
-```
 ---
 
 ## Result
