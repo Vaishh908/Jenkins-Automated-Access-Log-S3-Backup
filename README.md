@@ -111,7 +111,11 @@ automated-log-backup/
 
 Update the Ubuntu package repository:
 
-                       sudo apt update
+ 
+                    sudo apt update
+
+<img width="1920" height="1080" alt="Screenshot 2026-08-20 194823" src="https://github.com/user-attachments/assets/43cb3f00-73b6-4bbc-8bb0-2590e45762af" />
+
 
 Install Apache:
 
@@ -128,6 +132,9 @@ Enable Apache at boot:
 Check the status:
 
                     sudo systemctl status apache2
+
+<img width="1920" height="1080" alt="Screenshot 2026-08-20 202302" src="https://github.com/user-attachments/assets/9251040b-376f-4cb4-8063-943f1c7c9d16" />
+
 
 The Apache access log is located at:
 
@@ -199,6 +206,8 @@ Expected output:
 
 This confirms that Jenkins is using the EC2 IAM role.
 
+<img width="1920" height="1080" alt="Screenshot 2026-08-21 104021" src="https://github.com/user-attachments/assets/44a0087b-269f-42d8-8d32-7ab5ec0fb569" />
+
 ---
 
 ## Step 5 — Configure AWS Region
@@ -237,6 +246,8 @@ Then:
                               sudo -u jenkins aws s3 cp /tmp/test.txt \
                              s3://jenkins-access-log-backup-2026-vaishnavi/access-logs/ \
                               --region us-east-1
+
+<img width="1920" height="1080" alt="Screenshot 2026-08-21 104253" src="https://github.com/user-attachments/assets/2fe92139-9313-415b-b8ec-30649602a76c" />
 
 ---
 
@@ -319,11 +330,11 @@ echo "=========================================="
 
 Make the script executable:
 
-chmod +x ~/monitor_apache_log.sh
+          chmod +x ~/monitor_apache_log.sh
 
 Test:
 
-~/monitor_apache_log.sh
+          ~/monitor_apache_log.sh
 
 ---
 
@@ -331,7 +342,7 @@ Test:
 
 Create a Pipeline job named:
 
-Access-Log-S3-Backup
+         Access-Log-S3-Backup
 
 Go to:
 
@@ -339,6 +350,9 @@ Jenkins
 → New Item
 → Pipeline
 → Access-Log-S3-Backup
+
+<img width="1920" height="1080" alt="Screenshot 2026-08-21 103044" src="https://github.com/user-attachments/assets/c0bdb273-37b4-49c4-8129-e2fa107728ca" />
+
 
 Select:
 
@@ -448,21 +462,23 @@ Jenkins needs permission to clear the Apache log.
 
 Run:
 
-sudo visudo
+     sudo visudo
 
 Add:
 
-jenkins ALL=(root) NOPASSWD: /usr/bin/truncate
+        jenkins ALL=(root) NOPASSWD: /usr/bin/truncate
+
+<img width="1920" height="1080" alt="Screenshot 2026-08-21 112245" src="https://github.com/user-attachments/assets/166297b8-9de0-4902-a763-015b2c16cfa1" />
 
 Save the file.
 
 Test:
 
-sudo -u jenkins sudo truncate -s 0 /var/log/apache2/access.log
+    sudo -u jenkins sudo truncate -s 0 /var/log/apache2/access.log
 
 Verify:
 
-ls -lh /var/log/apache2/access.log
+    ls -lh /var/log/apache2/access.log
 
 ---
 
@@ -530,6 +546,9 @@ Log size is below threshold.
 No Jenkins job triggered.
 ==========================================
 ```
+
+<img width="1920" height="1080" alt="Screenshot 2026-08-21 114022" src="https://github.com/user-attachments/assets/663feefa-8dcc-4d0b-897e-97e34e466ac8" />
+
 ---
 
 ## Step 12 — Test Automatic Trigger
@@ -548,7 +567,7 @@ The script should detect that the threshold is exceeded and trigger:
 
 After testing, restore:
 
-THRESHOLD_MB=5
+                      THRESHOLD_MB=5
 
 ---
 
@@ -556,10 +575,11 @@ THRESHOLD_MB=5
 
 Open:
 
-Access-Log-S3-Backup
+                Access-Log-S3-Backup
 
 The Jenkins console should show:
 
+```text
 [Pipeline] Start of Pipeline
 
 
@@ -591,6 +611,8 @@ Sending email to: vaishuj500@gmail.com
 
 
 Finished: SUCCESS
+```
+<img width="867" height="831" alt="Screenshot 2026-08-21 133206" src="https://github.com/user-attachments/assets/ed1266d5-cc1d-4bff-b782-107869e9e0ab" />
 
 ---
 
@@ -608,27 +630,32 @@ Example:
 
 This confirms that the log has been successfully backed up to S3.
 
+
+<img width="1920" height="1080" alt="Screenshot 2026-08-21 131603" src="https://github.com/user-attachments/assets/3aafcd43-1e76-4522-8460-2be14d96130f" />
+
 ---
 
 ## Step 15 — Verify Cleared Log
 
 Check the Apache log:
 
-ls -lh /var/log/apache2/access.log
+        ls -lh /var/log/apache2/access.log
 
 Expected:
 
--rw-r----- 1 root adm 0 ... access.log
+      -rw-r----- 1 root adm 0 ... access.log
 
 Or:
 
-sudo du -h /var/log/apache2/access.log
+     sudo du -h /var/log/apache2/access.log
 
 Expected:
 
-0 /var/log/apache2/access.log
+        0 /var/log/apache2/access.log
 
 The file is cleared but not deleted.
+
+<img width="869" height="168" alt="Screenshot 2026-08-21 132126" src="https://github.com/user-attachments/assets/34a008e4-2a89-404b-a832-86d705e78130" />
 
 ---
 
@@ -640,11 +667,11 @@ To: vaishuj500@gmail.com
 
 
 Subject:
-Jenkins S3 Access Log Backup - SUCCESS
+     Jenkins S3 Access Log Backup - SUCCESS
 
 The email confirms:
 
-Apache access log backup completed successfully.
+       Apache access log backup completed successfully.
 
 
 S3 Bucket:
@@ -674,16 +701,22 @@ Jenkins pipeline               SUCCESS
 
 Example successful S3 upload:
 
-upload: backup/access_20260821_080109.log
-to s3://jenkins-access-log-backup-2026-vaishnavi/access-logs/access_20260821_080109.log
+         upload: backup/access_20260821_080109.log
+         to s3://jenkins-access-log-backup-2026-vaishnavi/access-logs/access_20260821_080109.log
 
 Jenkins result:
 
-Finished: SUCCESS
+         Finished: SUCCESS
+
+
+<img width="1920" height="1080" alt="Screenshot 2026-08-21 133356" src="https://github.com/user-attachments/assets/ed62ea3b-9676-45c1-a755-cde6add0e9e6" />
+
+<img width="1920" height="922" alt="Screenshot 2026-08-21 125715" src="https://github.com/user-attachments/assets/34f5db7b-6579-46c4-91e2-fc4ddfd8af99" />
+
 
 ---
 
-## Result
+# Result
 
 The automated log backup system successfully monitors the Apache access log and integrates Linux shell scripting with Jenkins and AWS services. When the configured log-size threshold is reached, the monitoring script triggers the Jenkins pipeline. Jenkins authenticates to AWS using an IAM role, creates a timestamped copy of the Apache access log, uploads it to Amazon S3, clears the original log, and sends an email notification.
 
@@ -691,7 +724,7 @@ The successful Jenkins Build #10 demonstrated that the AWS authentication, log b
 
 ---
 
-## Conclusion
+# Conclusion
 
 The project provides an automated and secure approach for managing Apache access logs. By combining Bash scripting, Jenkins Pipeline automation, Amazon S3, IAM roles, and email notifications, manual log backup operations are eliminated. The solution provides reliable log storage, controlled AWS permissions, automated log cleanup, and notification of successful or failed backup operations. This implementation demonstrates practical knowledge of Linux administration, Shell scripting, Jenkins CI/CD, AWS IAM, Amazon S3, automation, and DevOps practices.
 
