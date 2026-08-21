@@ -248,6 +248,7 @@ Create:
 
 Add:
 
+```text
 #!/bin/bash
 
 
@@ -314,6 +315,8 @@ fi
 
 echo "=========================================="
 
+```
+
 Make the script executable:
 
 chmod +x ~/monitor_apache_log.sh
@@ -343,6 +346,7 @@ Pipeline script
 
 Use the following Pipeline.
 
+```text
 pipeline {
                     --recursive \
                     --region us-east-1
@@ -435,7 +439,7 @@ Please check Jenkins Console Output.
         }
     }
 }
-
+```
 ---
 
 ## Step 9 — Configure Jenkins Sudo Permission
@@ -501,20 +505,21 @@ This is test email #1 sent from Jenkins
 
 Edit the cron table:
 
-crontab -e
+           crontab -e
 
 Add:
-
-*/5 * * * * /home/ubuntu/monitor_apache_log.sh >> /home/ubuntu/apache-monitor.log 2>&1
+           
+           */5 * * * * /home/ubuntu/monitor_apache_log.sh >> /home/ubuntu/apache-monitor.log 2>&1
 
 This executes the monitoring script every five minutes.
 
 Check the monitoring log:
 
-cat ~/apache-monitor.log
+         cat ~/apache-monitor.log
 
 Example:
 
+```text
 ==========================================
 Apache Log Monitoring Started
 ==========================================
@@ -524,7 +529,7 @@ Threshold: 5 MB
 Log size is below threshold.
 No Jenkins job triggered.
 ==========================================
-
+```
 ---
 
 ## Step 12 — Test Automatic Trigger
@@ -535,11 +540,11 @@ THRESHOLD_MB=0
 
 Run:
 
-~/monitor_apache_log.sh
+                     ~/monitor_apache_log.sh
 
 The script should detect that the threshold is exceeded and trigger:
 
-Access-Log-S3-Backup
+                       Access-Log-S3-Backup
 
 After testing, restore:
 
