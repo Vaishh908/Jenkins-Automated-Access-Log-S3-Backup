@@ -1,6 +1,6 @@
 # Automated Jenkins Job Triggered by Access Log Size 
 
-# Project Overview
+## Project Overview
 
 This project implements an automated Apache access log monitoring and backup system using Linux Shell Script, Jenkins, Amazon S3, AWS IAM Role, and Email Notification.
 
@@ -17,12 +17,13 @@ The solution uses an IAM Role attached to the Jenkins EC2 instance, so no long-l
 
 ---
 
-# Architectural Diagram
+## Architectural Diagram
 
+<img width="1536" height="1024" alt="ChatGPT Image Aug 21, 2026, 07_06_00 PM" src="https://github.com/user-attachments/assets/0e7be119-268b-424b-a1af-f39940633e97" />
 
 ---
 
-# Technology Used
+## Technology Used
 
 | Technology             | Purpose                              |
 | ---------------------- | ------------------------------------ |
@@ -39,18 +40,32 @@ The solution uses an IAM Role attached to the Jenkins EC2 instance, so no long-l
 
 ---
 
-# Prerequisites
+## Prerequisites
 
-Before implementing the project, install or configure:
+Before implementing the project, install and configure the following:
 
-             Ubuntu EC2 instance
-             Apache2
-             Jenkins
-             AWS CLI
-             AWS IAM Role
-             Amazon S3 bucket
-            Jenkins Email Extension Plugin
-            Internet connectivity
+- AWS
+          AWS account
+          EC2 instance
+           IAM Role
+           Amazon S3 bucket
+          IAM permissions for S3 upload
+- Server
+           Ubuntu Linux
+           Apache2
+           Jenkins
+           AWS CLI
+            curl
+          Jenkins Plugin
+
+Install:
+
+             Email Extension Plugin
+
+Your installed version:
+
+             Email Extension Plugin
+             2038.v7b_8817a_499d9
 
 Verify Apache:
 
@@ -66,35 +81,35 @@ Verify Jenkins:
 
 ---
 
-# Step 1 — Install Apache
+## Step 1 — Install Apache
 
 Update the Ubuntu package repository:
 
-sudo apt update
+                       sudo apt update
 
 Install Apache:
 
-sudo apt install apache2 -y
+                  sudo apt install apache2 -y
 
 Start Apache:
 
-sudo systemctl start apache2
+                  sudo systemctl start apache2
 
 Enable Apache at boot:
 
-sudo systemctl enable apache2
+                  sudo systemctl enable apache2
 
 Check the status:
 
-sudo systemctl status apache2
+                    sudo systemctl status apache2
 
 The Apache access log is located at:
 
-/var/log/apache2/access.log
+                    /var/log/apache2/access.log
 
 Verify:
 
-ls -lh /var/log/apache2/access.log
+                  ls -lh /var/log/apache2/access.log
 
 ---
 
@@ -102,15 +117,15 @@ ls -lh /var/log/apache2/access.log
 
 Access the Apache server from a browser:
 
-http://<EC2-PUBLIC-IP>
+                        http://<EC2-PUBLIC-IP>
 
 Each request generates an entry in:
 
-/var/log/apache2/access.log
+                      /var/log/apache2/access.log
 
 Check the log:
 
-sudo tail -20 /var/log/apache2/access.log
+                      sudo tail -20 /var/log/apache2/access.log
 
 ---
 
@@ -123,15 +138,15 @@ us-east-1
 
 Example bucket:
 
-jenkins-access-log-backup-2026-vaishnavi
+                           jenkins-access-log-backup-2026-vaishnavi
 
 Create the backup prefix:
 
-access-logs/
+                         access-logs/
 
 The final S3 path is:
 
-s3://jenkins-access-log-backup-2026-vaishnavi/access-logs/
+                          s3://jenkins-access-log-backup-2026-vaishnavi/access-logs/
 
 ---
 
@@ -139,7 +154,7 @@ s3://jenkins-access-log-backup-2026-vaishnavi/access-logs/
 
 Create an IAM role:
 
-Jenkins-S3-Log-Upload-Role
+                          Jenkins-S3-Log-Upload-Role
 
 Attach the required S3 permissions.
 
@@ -147,7 +162,7 @@ Attach this IAM role to the EC2 instance running Jenkins.
 
 Verify the role from the server:
 
-aws sts get-caller-identity
+                         aws sts get-caller-identity
 
 Expected output:
 
@@ -164,11 +179,11 @@ This confirms that Jenkins is using the EC2 IAM role.
 
 Configure the AWS CLI region:
 
-sudo -u jenkins aws configure set region us-east-1
+                   sudo -u jenkins aws configure set region us-east-1
 
 Verify:
 
-sudo -u jenkins aws configure get region
+                   sudo -u jenkins aws configure get region
 
 Expected:
 
@@ -180,22 +195,22 @@ us-east-1
 
 Test access to the bucket:
 
-sudo -u jenkins aws s3 ls \
-s3://jenkins-access-log-backup-2026-vaishnavi
+                              sudo -u jenkins aws s3 ls \
+                              s3://jenkins-access-log-backup-2026-vaishnavi
 
 Expected:
 
-PRE access-logs/
+                            PRE access-logs/
 
 Test uploading a file:
 
-echo "Jenkins S3 test" > /tmp/test.txt
+                               echo "Jenkins S3 test" > /tmp/test.txt
 
 Then:
 
-sudo -u jenkins aws s3 cp /tmp/test.txt \
-s3://jenkins-access-log-backup-2026-vaishnavi/access-logs/ \
---region us-east-1
+                              sudo -u jenkins aws s3 cp /tmp/test.txt \
+                             s3://jenkins-access-log-backup-2026-vaishnavi/access-logs/ \
+                              --region us-east-1
 
 ---
 
@@ -203,7 +218,7 @@ s3://jenkins-access-log-backup-2026-vaishnavi/access-logs/ \
 
 Create:
 
-nano ~/monitor_apache_log.sh
+                         nano ~/monitor_apache_log.sh
 
 Add:
 
@@ -280,7 +295,10 @@ chmod +x ~/monitor_apache_log.sh
 Test:
 
 ~/monitor_apache_log.sh
-Step 8 — Configure Jenkins Job
+
+---
+
+## Step 8 — Configure Jenkins Job
 
 Create a Pipeline job named:
 
@@ -391,7 +409,10 @@ Please check Jenkins Console Output.
         }
     }
 }
-Step 9 — Configure Jenkins Sudo Permission
+
+---
+
+## Step 9 — Configure Jenkins Sudo Permission
 
 Jenkins needs permission to clear the Apache log.
 
@@ -447,7 +468,10 @@ Test configuration by sending test e-mail
 A successful test should result in an email such as:
 
 This is test email #1 sent from Jenkins
-Step 11 — Configure Automatic Monitoring
+
+---
+
+## Step 11 — Configure Automatic Monitoring
 
 Edit the cron table:
 
@@ -474,7 +498,10 @@ Threshold: 5 MB
 Log size is below threshold.
 No Jenkins job triggered.
 ==========================================
-Step 12 — Test Automatic Trigger
+
+---
+
+## Step 12 — Test Automatic Trigger
 
 For testing, temporarily set:
 
@@ -491,7 +518,10 @@ Access-Log-S3-Backup
 After testing, restore:
 
 THRESHOLD_MB=5
-Step 13 — Verify Jenkins Build
+
+---
+
+## Step 13 — Verify Jenkins Build
 
 Open:
 
@@ -530,7 +560,10 @@ Sending email to: vaishuj500@gmail.com
 
 
 Finished: SUCCESS
-Step 14 — Verify S3 Upload
+
+---
+
+## Step 14 — Verify S3 Upload
 
 Run:
 
@@ -544,7 +577,9 @@ Example:
 
 This confirms that the log has been successfully backed up to S3.
 
-Step 15 — Verify Cleared Log
+---
+
+## Step 15 — Verify Cleared Log
 
 Check the Apache log:
 
@@ -564,7 +599,9 @@ Expected:
 
 The file is cleared but not deleted.
 
-Step 16 — Email Verification
+---
+
+# Step 16 — Email Verification
 
 After a successful Jenkins build, the configured recipient receives:
 
@@ -635,7 +672,7 @@ automated-log-backup/
 
 ---
 
-# Result
+## Result
 
 The automated log backup system successfully monitors the Apache access log and integrates Linux shell scripting with Jenkins and AWS services. When the configured log-size threshold is reached, the monitoring script triggers the Jenkins pipeline. Jenkins authenticates to AWS using an IAM role, creates a timestamped copy of the Apache access log, uploads it to Amazon S3, clears the original log, and sends an email notification.
 
@@ -643,7 +680,7 @@ The successful Jenkins Build #10 demonstrated that the AWS authentication, log b
 
 ---
 
-# Conclusion
+## Conclusion
 
 The project provides an automated and secure approach for managing Apache access logs. By combining Bash scripting, Jenkins Pipeline automation, Amazon S3, IAM roles, and email notifications, manual log backup operations are eliminated. The solution provides reliable log storage, controlled AWS permissions, automated log cleanup, and notification of successful or failed backup operations. This implementation demonstrates practical knowledge of Linux administration, Shell scripting, Jenkins CI/CD, AWS IAM, Amazon S3, automation, and DevOps practices.
 
